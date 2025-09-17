@@ -2,9 +2,5 @@ node_modules/
 # Log files
 *.log
 
-# OS-specific files
-.DS_Store
-Thumbs.db
-
 # Environment files
 .env
