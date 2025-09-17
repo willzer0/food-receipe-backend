@@ -7,9 +7,23 @@ const foodSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    description: String,
-    ingredients: [String],
-    steps: [String],
+    description: {
+      String,
+      type: String,
+      maxlength: [
+        500,
+        "Description must be less than or equal to 500 characters",
+      ],
+      required: true,
+    },
+    ingredients: {
+      type: String,
+      required: true,
+    },
+    steps: {
+      type: String,
+      required: true,
+    },
     category: {
       type: String,
       enum: ["Sarapan", "Makan Siang", "Makan Malam", "Dessert"],
@@ -18,6 +32,8 @@ const foodSchema = new mongoose.Schema(
     cookingTime: {
       type: Number, // dalam menit
       required: true,
+      min: [1, "Cooking time must be at least 1 minute"],
+      max: [300, "Cooking time must be at most 300 minutes"],
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
