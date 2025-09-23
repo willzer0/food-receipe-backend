@@ -8,7 +8,6 @@ const foodSchema = new mongoose.Schema(
       trim: true,
     },
     description: {
-      String,
       type: String,
       maxlength: [
         500,
