@@ -60,3 +60,14 @@ exports.deleteFood = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+///////////////////////////////////
+exports.getTop10FastestCookingTimes = catchAsync(async (req, res, next) => {
+  const fastestFoods = await Food.find().sort({ cookingTime: 1 }).limit(10);
+  res.status(200).json({
+    status: 'success',
+    results: fastestFoods.length,
+    data: {
+      foods: fastestFoods,
+    },
+  });
+});
