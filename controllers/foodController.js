@@ -71,3 +71,22 @@ exports.getTop10FastestCookingTimes = catchAsync(async (req, res, next) => {
     },
   });
 });
+///////////////////////////////////
+exports.getLatestFoods = catchAsync(async (req, res, next) => {
+  const latestFoods = await Food.aggregate([
+    {
+      $sort: { createdAt: -1 },
+    },
+    {
+      $limit: 5,
+    },
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    results: latestFoods.length,
+    data: {
+      foods: latestFoods,
+    },
+  });
+});

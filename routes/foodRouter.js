@@ -1,12 +1,12 @@
 const express = require('express');
 const foodController = require('../controllers/foodController');
-
+////////////////////////////////
 const router = express.Router();
-
+////////////////////////////////
+router.route('/get-latest-recipes').get(foodController.getLatestFoods);
 router
   .route('/top-10-fastest-recipes')
   .get(foodController.getTop10FastestCookingTimes);
-
 router
   .route('/')
   .get(foodController.getAllFoods)
@@ -16,5 +16,5 @@ router
   .get(foodController.getFood)
   .patch(foodController.updateFood)
   .delete(foodController.deleteFood);
-
+////////////////////////////////
 module.exports = router;
