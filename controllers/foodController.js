@@ -32,6 +32,9 @@ exports.createFood = catchAsync(async (req, res, next) => {
 ///////////////////////////////////
 exports.getFood = catchAsync(async (req, res, next) => {
   const food = await Food.findById(req.params.id);
+  if (!food) {
+    return next(new AppError('No food found with that ID', 404));
+  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -45,6 +48,9 @@ exports.updateFood = catchAsync(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
+  if (!food) {
+    return next(new AppError('No food found with that ID', 404));
+  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -55,6 +61,9 @@ exports.updateFood = catchAsync(async (req, res, next) => {
 //////////////////////////////////
 exports.deleteFood = catchAsync(async (req, res, next) => {
   await Food.findByIdAndDelete(req.params.id);
+  if (!food) {
+    return next(new AppError('No food found with that ID', 404));
+  }
   res.status(204).json({
     status: 'success',
     data: null,

@@ -1,5 +1,6 @@
 const express = require('express');
 const foodController = require('../controllers/foodController');
+const authController = require('../controllers/authController');
 ////////////////////////////////
 const router = express.Router();
 ////////////////////////////////
@@ -7,14 +8,19 @@ router.route('/get-latest-recipes').get(foodController.getLatestFoods);
 router
   .route('/top-10-fastest-recipes')
   .get(foodController.getTop10FastestCookingTimes);
+////////////////////////////////
 router
   .route('/')
-  .get(foodController.getAllFoods)
+  .get(authController.protect, foodController.getAllFoods)
   .post(foodController.createFood);
 router
   .route('/:id')
   .get(foodController.getFood)
   .patch(foodController.updateFood)
-  .delete(foodController.deleteFood);
+  .delete(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide'),
+    foodController.deleteFood
+  );
 ////////////////////////////////
 module.exports = router;
