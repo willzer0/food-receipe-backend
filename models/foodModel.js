@@ -55,9 +55,48 @@ const foodSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 ////////////////////////////////
-const Food = mongoose.model('Food', foodSchema);
+// foodSchema.virtual('durationWeeks').get(function () {
+//   return this.duration / 7;
+// });
 
+// DOCUMENT MIDDLEWARE: runs before .save() and .create()
+// tourSchema.pre('save', function (next) {
+//   this.slug = slugify(this.name, { lower: true });
+//   next();
+// });
+
+// foodSchema.pre('save', function (next) {
+//   console.log('Will save document...');
+//   next();
+// });
+
+// foodSchema.post('save', function (doc, next) {
+//   console.log(doc);
+//   next();
+// });
+
+// QUERY MIDDLEWARE
+// foodSchema.pre(/^find/, function (next) {
+//   this.find({ secretTour: { $ne: true } });
+//   this.start = Date.now();
+//   next();
+// });
+
+// foodSchema.post(/^find/, function (docs, next) {
+//   console.log(`Query took ${Date.now() - this.start} milliseconds!`);
+//   console.log(docs);
+//   next();
+// });
+////////////////////////////////
+foodSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  console.log(this.pipeline());
+  next();
+});
+////////////////////////////////
+const Food = mongoose.model('Food', foodSchema);
+//////////////////////////////////
 module.exports = Food;

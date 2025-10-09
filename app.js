@@ -50,14 +50,19 @@ app.use(
 );
 app.use(csurf());
 ////////////////////////////////
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 app.use(express.static(`${__dirname}/public`));
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  // console.log('dibawah adalah req header', req.headers);
+  next();
+});
 ////////////////////////////////
 app.use('/api/v1/foods', foodRouter);
 app.use('/api/v1/users', userRouter);
 // app.use("/api/v1", favoriteRouter);
 ////////////////////////////////
-app.all('*', (req, res, next) => {
+app.all('/*splat', (req, res, next) => {
   next(new appError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 app.use(errorHandler);
